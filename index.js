@@ -218,7 +218,7 @@ async function run() {
         // ================================
 
         // Get all categories for dropdown
-        app.get("/admin/categories", async (req, res) => {
+        app.get("/api/admin/categories", async (req, res) => {
             try {
 
 
@@ -231,7 +231,7 @@ async function run() {
         });
 
         // Get all Q&A pairs with pagination
-        app.get("/admin/qa-pairs", async (req, res) => {
+        app.get("/api/admin/qa-pairs", async (req, res) => {
             try {
 
                 const qaPairs = await qaCollection.find({}).toArray();
@@ -292,7 +292,7 @@ async function run() {
         // });
 
         // Add new Q&A pair
-        app.post("/admin/qa-pairs", async (req, res) => {
+        app.post("/api/admin/qa-pairs", async (req, res) => {
             try {
                 if (req.user.role !== "ADMIN" && req.user.role !== "SUPER_ADMIN") {
                     return res.status(403).send({ message: "Access denied" });
@@ -335,7 +335,7 @@ async function run() {
         });
 
         // Update Q&A pair
-        app.put("/admin/qa-pairs/:id", async (req, res) => {
+        app.put("/api/admin/qa-pairs/:id", async (req, res) => {
             try {
                 if (req.user.role !== "ADMIN" && req.user.role !== "SUPER_ADMIN") {
                     return res.status(403).send({ message: "Access denied" });
@@ -376,7 +376,7 @@ async function run() {
         });
 
         // Delete Q&A pair (soft delete)
-        app.delete("/admin/qa-pairs/:id", async (req, res) => {
+        app.delete("/api/admin/qa-pairs/:id", async (req, res) => {
             try {
                 if (req.user.role !== "ADMIN" && req.user.role !== "SUPER_ADMIN") {
                     return res.status(403).send({ message: "Access denied" });
@@ -457,7 +457,7 @@ async function run() {
         - Cancel
         */
 
-        app.post("/ask-ai", async (req, res) => {
+        app.post("/api/ask-ai", async (req, res) => {
             try {
                 const data = req.body;
                 // console.log("data.......", data);

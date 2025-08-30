@@ -387,6 +387,6 @@ app.get('/', (req, res) => {
     res.send('Welcome to My Classroom')
 })
 
-// app.listen(port, () => {
-//     console.log(`My Classroom running at ${port}`)
-// })
+app.listen(port, () => {
+    console.log(`My Classroom running at ${port}`)
+})

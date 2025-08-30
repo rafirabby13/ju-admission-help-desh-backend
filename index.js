@@ -1,5 +1,4 @@
 import express from 'express'
-import serverless from 'serverless-http';
 
 const app = express()
 import { MongoClient, ObjectId, ServerApiVersion } from 'mongodb';
@@ -15,8 +14,8 @@ dotenv.config()
 app.use(express.json())
 app.use(cors({
     origin: [
-        'http://localhost:5173',     // Without slash
-        'http://localhost:5173/',    // With slash (both variants)
+        'http://localhost:5173',     
+        'http://localhost:5173/',    
         process.env.FRONTEND_URL?.replace(/\/$/, '')
     ],
     credentials: true
@@ -154,48 +153,6 @@ async function run() {
             }
         })
 
-
-
-
-        // 2. Categories Collection Schema
-        const categorySchema = {
-            _id: ObjectId,
-            name: "admissionRequirements",           // Technical name for code
-            displayName: "Admission Requirements",   // Display name for admin
-            description: "Questions about admission requirements and eligibility",
-            subcategories: [
-                {
-                    name: "general",
-                    displayName: "General Requirements",
-                    description: "Basic admission requirements"
-                },
-                {
-                    name: "gpaRequirements",
-                    displayName: "GPA Requirements",
-                    description: "Grade point average related questions"
-                }
-            ],
-            isActive: true,
-            createdAt: new Date(),
-            updatedAt: new Date()
-        };
-
-        // 3. Q&A Pairs Collection Schema  
-        const qaPairSchema = {
-            _id: ObjectId,
-            question: "What are the general admission requirements for JU undergraduate programs?",
-            answer: "To apply for undergraduate programs at JU, you must have successfully completed your Higher Secondary Certificate (HSC) or equivalent exams. Your GPA should meet the minimum requirement set by the specific faculty.",
-            category: "admissionRequirements",           // Links to category
-            subcategory: "general",                     // Optional subcategory
-            keywords: ["admission", "requirements", "undergraduate", "HSC", "GPA"], // For better matching
-            priority: 1,                               // Higher priority = shown first
-            isActive: true,                            // Admin can disable without deleting
-            createdBy: ObjectId,                       // Admin who created it
-            createdAt: new Date(),
-            updatedAt: new Date(),
-            usageCount: 0,                             // Track how often it's matched
-            lastUsed: null                             // When it was last matched
-        };
 
         app.get("/api/admin/categories", async (req, res) => {
             try {

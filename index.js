@@ -49,7 +49,7 @@ async function initializeDatabase() {
         console.error("Database connection error:", error);
     }
 }
-
+initializeDatabase();
 async function seedSuperAdmin() {
     const existingAdmin = await usersCollection.findOne({ role: "SUPER_ADMIN" });
     if (existingAdmin) {
@@ -321,6 +321,6 @@ app.post("/api/ask-ai", async (req, res) => {
 //     console.log(`My Classroom running at ${port}`)
 // })
 
-initializeDatabase();
+
 
 export default app;

@@ -1,9 +1,10 @@
 import express from 'express'
+import serverless from 'serverless-http';
+
 const app = express()
 import { MongoClient, ObjectId, ServerApiVersion } from 'mongodb';
 import dotenv from "dotenv"
 import cors from "cors"
-import { GoogleGenerativeAI } from "@google/generative-ai";
 import { GoogleGenAI } from '@google/genai';
 
 
@@ -66,7 +67,7 @@ async function run() {
                 .send({ success: true })
         })
 
-        app.post("/create-user", async (req, res) => {
+        app.post("/api/create-user", async (req, res) => {
             const data = req.body
             const isUSerExist = await usersCollection.findOne({ email: data.email })
             if (isUSerExist) {
@@ -79,7 +80,7 @@ async function run() {
             res.send({ user: newUser, success: true })
         })
 
-        app.get("/user/me", async (req, res) => {
+        app.get("/api/user/me", async (req, res) => {
             const email = req.query.email
             console.log("email...", email)
 
@@ -115,7 +116,7 @@ async function run() {
         }
         await seedSuperAdmin();
 
-        app.post("/feedback", async (req, res) => {
+        app.post("/api/feedback", async (req, res) => {
             try {
                 const data = req.body;
 
@@ -140,7 +141,7 @@ async function run() {
                 res.status(500).send({ message: "Server error" });
             }
         });
-        app.get('/feedback', async (req, res) => {
+        app.get('/api/feedback', async (req, res) => {
 
             try {
                 const assignments = await feedbackCollection.find({}).toArray()
@@ -155,16 +156,6 @@ async function run() {
 
 
 
-
-        /// admin q&a section 
-
-
-
-        // ================================
-        // DATABASE STRUCTURE & BACKEND API
-        // ================================
-
-        // 1. Database Collections Structure
 
         // 2. Categories Collection Schema
         const categorySchema = {
@@ -206,18 +197,6 @@ async function run() {
             lastUsed: null                             // When it was last matched
         };
 
-        // ================================
-        // BACKEND API ENDPOINTS
-        // ================================
-
-        // Seed default categories
-
-
-        // ================================
-        // API ENDPOINTS FOR ADMIN
-        // ================================
-
-        // Get all categories for dropdown
         app.get("/api/admin/categories", async (req, res) => {
             try {
 
@@ -400,62 +379,7 @@ async function run() {
             }
         });
 
-        // ================================
-        // API FOR CHATBOT TO GET Q&A
-        // ================================
-
-
-        // ================================
-        // ADMIN MODAL FORM FIELDS
-        // ================================
-
-        /* 
-        Frontend Admin Modal should include these fields:
-        
-        1. Question* (required)
-           - Type: Textarea
-           - Placeholder: "Enter the question users might ask"
-           - Validation: Required, min 10 characters
-        
-        2. Answer* (required)  
-           - Type: Textarea with rich text editor
-           - Placeholder: "Provide detailed answer"
-           - Validation: Required, min 20 characters
-        
-        3. Category* (required)
-           - Type: Dropdown/Select
-           - Options: Fetch from /admin/categories API
-           - Validation: Required
-        
-        4. Subcategory (optional)
-           - Type: Dropdown/Select  
-           - Options: Populate based on selected category
-           - Validation: Optional
-        
-        5. Keywords (optional)
-           - Type: Tag input (allow multiple)
-           - Placeholder: "admission, requirements, GPA"
-           - Help text: "Add keywords to improve matching"
-        
-        6. Priority (optional)
-           - Type: Number input
-           - Default: 1
-           - Range: 1-10 (10 = highest priority)
-           - Help text: "Higher priority answers appear first"
-        
-        7. Status (optional)
-           - Type: Toggle/Switch
-           - Default: Active
-           - Options: Active/Inactive
-        
-        8. Preview Button
-           - Shows how the Q&A will appear in chatbot
-        
-        Modal Actions:
-        - Save & Add Another
-        - Save & Close  
-        - Cancel
-        */
+       
 
         app.post("/api/ask-ai", async (req, res) => {
             try {
@@ -506,6 +430,6 @@ app.get('/', (req, res) => {
     res.send('Welcome to My Classroom')
 })
 
-app.listen(port, () => {
-    console.log(`My Classroom running at ${port}`)
-})
+// app.listen(port, () => {
+//     console.log(`My Classroom running at ${port}`)
+// })
